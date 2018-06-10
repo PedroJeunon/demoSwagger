@@ -1,0 +1,83 @@
+swagger: '2.0'
+info: 
+    title: API Carrinho
+    description: Carrinho de compras
+    version: 0.0.1
+host: localhost:8080
+basePath: /rest/carrinho
+schemes: 
+    - http
+    - https
+definitions:
+    UsuarioDTO:
+        type: Object
+        properties: 
+            cpf:
+                type: String
+                format: CPF
+    Produto:
+        type: Object
+        properties:
+            codigo: 
+                type: Long
+                format: int64
+            descricao:
+                type: String
+    Item:
+        type: Object
+        properties:
+            produto: 
+                type: Produto
+            valorUnitario: 
+                type: BigDecimal
+            quantidade:
+                type: integer
+                format: int32
+paths:
+    /criarcarrinho:
+    post:
+        summary: Metodo que cria um carrinho por cpf
+        consumes:
+            - application/json
+        produces:
+            - application/json
+        parameters:
+            - in: body
+            name: UsuarioDTO
+            required: true
+            schema:
+                $ref: '#/definitions/UsuarioDTO'
+        responses:
+            '201':
+                description: Retorna uma mensagem dizendo que o carrinho esta ok para o cpf
+            '400':
+                description: Caso o body tenha algum erro
+    /adicionarItem:
+    post:
+        summary: Metodo que adiciona um item ao carrinho
+        consumes:
+         - application/json
+        produces:
+         - application/json
+        parameters:
+            - in: body
+            name: Item
+            required: true
+            schema:
+                $ref: '#/definitions/Item'
+        responses:
+            '201':
+                description: Retorna uma mensagem dizendo que o item foi adicionado
+            '400':
+                description: Caso o body tenha algum erro
+    /listarcarrinhos:
+    get:
+        summary: Metodo de listar todos os carrinhos disponiveis
+        produces: 
+            - application/json
+        responses:
+            '200':
+                description: Retorna os carrinhos criado
+            '204':
+                description: Caso não exista nenhum carrinho criado
+        
